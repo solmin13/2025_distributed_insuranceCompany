@@ -1,21 +1,27 @@
 package main;
 
-public class Menu {
-	java.util.Scanner scanner;
+import java.util.*;
 
-	public Menu(java.util.Scanner scanner) {
+public class Menu {
+
+	private CustomerList customerList;
+	private Scanner scanner;
+
+	public Menu(Scanner scanner) {
 		this.scanner = scanner;
+
+		this.customerList = new CustomerListImpl();
 	}
 
 	public void printMainMenu() {
 		System.out.println("Select Menu:");
-		String[] menuName = { "add customer", "delete customer", "search customer", "update customer" };
+		String[] menuName = { "add customer", "delete customer", "search customer", "modify customer" };
 		for (int i = 0; i < menuName.length; i++) {
 			System.out.printf("%d. %s \n", i + 1, menuName[i]);
 		}
 		System.out.println("\nEnter 0 for EXIT.");
 	}
-	
+
 	public int getUserSelect() {
 		System.out.print(">> ");
 		return Integer.parseInt(scanner.nextLine());
@@ -63,10 +69,11 @@ public class Menu {
 		String sexStr = scanner.nextLine();
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 
-		Sales sales = new Sales();
+		Sales sales = new Sales(this.customerList);
 		if (sales.createCustomer(accountNumber, address, age, job, name, phoneNumber, rrn, sex)) {
 			System.out.println("Customer added successfully.");
 		} else
 			System.out.printf("false");
 	}
+
 }

@@ -1,60 +1,33 @@
 package main;
 
-
-/**
- * @author 占쌘솔뱄옙
- * @version 1.0
- * @created 05-5-2025 占쏙옙占쏙옙 11:05:25
- */
 public class Sales extends Employee {
 
 	public CustomerList customerList;
-//	public Contract m_Contract;
 
-	public Sales(){
-		this.customerList = new CustomerListImpl();
+	public Sales(CustomerList customerList) {
+		this.customerList = customerList;
 	}
 
-
-
 	/**
 	 * 
-	 * @param 占쏙옙占쏙옙占�ID
-	 * @param 占쏙옙품ID
+	 * @param accountNumber;
+	 * @param address;
+	 * @param age;
+	 * @param customerID;
+	 * @param job;
+	 * @param name;
+	 * @param phoneNumber;
+	 * @param rrn;
+	 * @param sex;
 	 */
-//	public boolean createContract(String 占쏙옙占쏙옙占�ID, String 占쏙옙품ID){
-//		return false;
-//	}
-
-	/**
-	 * 
-	 * 	@param accountNumber;
-	 * 	@param address; // String �����쇰� 蹂�寃�
-	 *  @param age;
-	 * 	@param customerID;
-	 * 	@param job;
-	 * 	@param name;
-	 * 	@param phoneNumber; // �대� 蹂�寃�
-	 * 	@param rrn;
-	 * 	@param sex; // Sex enum ���� �ъ��
-	 */
-	public boolean createCustomer(
-		String accountNumber, String address, int age, String job, String name,
+	public boolean createCustomer(String accountNumber, String address, int age, String job, String name,
 			String phoneNumber, String rrn, Sex sex) {
-		Customer customer = new Customer.Builder()
-				.accountNumber(accountNumber)
-				.address(address)
-				.age(age)
-				.job(job)
-				.name(name)
-				.rrn(rrn)
-				.sex(sex)
-				.phoneNumber(phoneNumber)
-				.build();
+		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).job(job)
+				.name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
 		System.out.println(customer);
 		return customerList.insert(customer);
 	}
-	
+
 	public Customer getCustomer(String customerId) {
 		return customerList.search(customerId);
 	}
@@ -136,4 +109,8 @@ public class Sales extends Employee {
 //		return false;
 //	}
 
+//	public Contract m_Contract;
+//	public boolean createContract(String 占쏙옙占쏙옙占�ID, String 占쏙옙품ID){
+//		return false;
+//	}
 }

@@ -12,10 +12,6 @@ public class CustomerListImpl implements CustomerList {
 		this.customers = new ArrayList<Customer>();
 	}
 
-	/**
-	 * 
-	 * @param customerID
-	 */
 	public boolean delete(String customerID){
 		Iterator<Customer> iterator = customers.iterator();
 		while (iterator.hasNext()) {
@@ -27,18 +23,11 @@ public class CustomerListImpl implements CustomerList {
 		}
 		return false;
 	}
-	/**
-	 * 
-	 * @param customer
-	 */
+
 	public boolean insert(Customer customer){
 		return this.customers.add(customer);
 	}
 
-	/**
-	 * 
-	 * @param customerID
-	 */
 	public Customer search(String customerID){
 		for (Customer customer : customers) {
 			if (customer.getCustomerID().equals(customerID)) {
@@ -48,10 +37,6 @@ public class CustomerListImpl implements CustomerList {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param updatedCustomer
-	 */
 	public boolean update(Customer updatedCustomer){
 		for (int i = 0; i < customers.size(); i++) {
 			Customer existingCustomer = customers.get(i);
