@@ -9,7 +9,6 @@ public class Menu {
 
 	public Menu(Scanner scanner) {
 		this.scanner = scanner;
-
 		this.customerList = new CustomerListImpl();
 	}
 
@@ -43,30 +42,14 @@ public class Menu {
 	private void createCustomer() {
 		System.out.println("Enter customer details:");
 
-		System.out.print("Account Number: ");
-		String accountNumber = scanner.nextLine();
-
-		System.out.print("Address: ");
-		String address = scanner.nextLine();
-
-		System.out.print("Age: ");
-		int age = scanner.nextInt();
-		scanner.nextLine(); // Consume newline
-
-		System.out.print("Job: ");
-		String job = scanner.nextLine();
-
-		System.out.print("Name: ");
-		String name = scanner.nextLine();
-
-		System.out.print("Phone Number: ");
-		String phoneNumber = scanner.nextLine();
-
-		System.out.print("RRN: ");
-		String rrn = scanner.nextLine();
-
-		System.out.print("Sex (M/F): ");
-		String sexStr = scanner.nextLine();
+		String accountNumber = getUserInputStr("Account Number");
+		String address = getUserInputStr("Address");
+		int age = getUserInputInt("Age");
+		String job = getUserInputStr("Job");
+		String name = getUserInputStr("Name");
+		String phoneNumber = getUserInputStr("Phone Number");
+		String rrn = getUserInputStr("RRN");
+		String sexStr = getUserInputStr("Sex (M/F)");
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 
 		Sales sales = new Sales(this.customerList);
@@ -74,6 +57,15 @@ public class Menu {
 			System.out.println("Customer added successfully.");
 		} else
 			System.out.printf("false");
+	}
+
+	private String getUserInputStr(String title) {
+		System.out.print(title + ": ");
+		return scanner.nextLine();
+	}
+
+	private int getUserInputInt(String title) {
+		return Integer.parseInt(getUserInputStr(title));
 	}
 
 }
