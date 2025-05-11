@@ -21,11 +21,6 @@ public class Menu {
 		System.out.println("\nEnter 0 for EXIT.");
 	}
 
-	public int getUserSelect() {
-		System.out.print(">> ");
-		return Integer.parseInt(scanner.nextLine());
-	}
-
 	public void excuteMenu(int selectedMenu) {
 		switch (selectedMenu) {
 		case 0: {
@@ -57,6 +52,16 @@ public class Menu {
 			System.out.println("Customer added successfully.");
 		} else
 			System.out.printf("false");
+	}
+
+	public int getUserSelectInt() {
+		System.out.print(">> ");
+		return Integer.parseInt(scanner.nextLine());
+	}
+
+	public String getUserSelectStr() {
+		System.out.print(">> ");
+		return scanner.nextLine();
 	}
 
 	private String getUserInputStr(String title) {

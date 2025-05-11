@@ -9,7 +9,7 @@ public class Main {
 		Menu menu = new Menu(scanner);
 		while (true) {
 			menu.printMainMenu();
-			int selectedMenu = menu.getUserSelect();
+			int selectedMenu = menu.getUserSelectInt();
 			menu.excuteMenu(selectedMenu);
 		}
 
