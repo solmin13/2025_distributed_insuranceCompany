@@ -1,20 +1,25 @@
 package main;
-/**
- * @author �ڼֹ�
- * @version 1.0
- * @created 05-5-2025 ���� 12:24:25
- */
+
 public class Employee {
 
-	public String employeeID;
+	private String employeeID;
+	private EmployeeType employeeType;
 
-	public Employee(){
+	public enum EmployeeType {
+		Sales, UnderWriter, ProductManagement, LossAdjuster
+	}
+
+	public Employee(int numOfEmployees, EmployeeType employeeType) {
 		this.employeeID = RandomIdGenerater.Generate();
+		this.employeeType = employeeType;
 	}
 
 	public String getEmployeeID() {
 		return employeeID;
 	}
 
+	public String getEmployeeType() {
+		return employeeID;
+	}
 
 }
