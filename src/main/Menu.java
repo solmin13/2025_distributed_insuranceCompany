@@ -4,12 +4,17 @@ import java.util.*;
 
 public class Menu {
 
-	private CustomerList customerList;
+	private CustomerListImpl customerList;
+	private EmployeeListImpl employeeList;
+	private String loginedEmployeeID;
 	private Scanner scanner;
 
-	public Menu(Scanner scanner) {
-		this.scanner = scanner;
-		this.customerList = new CustomerListImpl();
+	public Menu(CustomerListImpl customerList, EmployeeListImpl employeeList, String loginedEmployeeID) {
+		this.scanner = new Scanner(System.in);
+		this.customerList = customerList;
+		this.employeeList = employeeList;
+		this.loginedEmployeeID = loginedEmployeeID;
+		
 	}
 
 	public void printMainMenu() {
@@ -22,6 +27,7 @@ public class Menu {
 	}
 
 	public void excuteMenu(int selectedMenu) {
+		
 		switch (selectedMenu) {
 		case 0: {
 			System.out.println("Good Bye...");
@@ -40,6 +46,7 @@ public class Menu {
 		String accountNumber = getUserInputStr("Account Number");
 		String address = getUserInputStr("Address");
 		int age = getUserInputInt("Age");
+		String customerID = Integer.toString(customerList.customers.size());
 		String job = getUserInputStr("Job");
 		String name = getUserInputStr("Name");
 		String phoneNumber = getUserInputStr("Phone Number");
@@ -47,8 +54,9 @@ public class Menu {
 		String sexStr = getUserInputStr("Sex (M/F)");
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 
-		Sales sales = new Sales(this.customerList);
-		if (sales.createCustomer(accountNumber, address, age, job, name, phoneNumber, rrn, sex)) {
+		
+		Sales sales = (Sales)employeeList.search(loginedEmployeeID);
+		if (sales.createCustomer(accountNumber, address, age, customerID, job, name, phoneNumber, rrn, sex)) {
 			System.out.println("Customer added successfully.");
 		} else
 			System.out.printf("false");

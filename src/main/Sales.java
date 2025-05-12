@@ -3,10 +3,12 @@ package main;
 public class Sales extends Employee {
 
 	public CustomerList customerList;
-
-	public Sales(CustomerList customerList) {
+	
+	public Sales(int numOfEmployees, EmployeeType employeeType, CustomerList customerList) {
+		super(numOfEmployees, employeeType);
 		this.customerList = customerList;
 	}
+
 
 	/**
 	 * 
@@ -20,9 +22,9 @@ public class Sales extends Employee {
 	 * @param rrn;
 	 * @param sex;
 	 */
-	public boolean createCustomer(String accountNumber, String address, int age, String job, String name,
+	public boolean createCustomer(String accountNumber, String address, int age, String customerID, String job, String name,
 			String phoneNumber, String rrn, Sex sex) {
-		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).job(job)
+		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).customerID(customerID).job(job)
 				.name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
 		System.out.println(customer);
 		return customerList.insert(customer);

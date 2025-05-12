@@ -14,7 +14,7 @@ public class Customer {
 		this.accountNumber = builder.accountNumber;
 		this.address = builder.address;
 		this.age = builder.age;
-		this.customerID = RandomIdGenerater.Generate();
+		this.customerID = builder.customerID;
 		this.job = builder.job;
 		this.name = builder.name;
 		this.phoneNumber = builder.phoneNumber;
@@ -82,6 +82,7 @@ public class Customer {
 		private String accountNumber;
 		private String address;
 		private int age;
+		private String customerID;
 		private String job;
 		private String name;
 		private String phoneNumber;
@@ -100,6 +101,11 @@ public class Customer {
 
 		public Builder age(int age) {
 			this.age = age;
+			return this;
+		}
+		
+		public Builder customerID(String customerID) {
+			this.customerID = customerID;
 			return this;
 		}
 

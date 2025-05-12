@@ -10,7 +10,7 @@ public class Employee {
 	}
 
 	public Employee(int numOfEmployees, EmployeeType employeeType) {
-		this.employeeID = RandomIdGenerater.Generate();
+		this.employeeID = Integer.toString(numOfEmployees);
 		this.employeeType = employeeType;
 	}
 
