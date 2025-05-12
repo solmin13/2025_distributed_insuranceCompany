@@ -10,11 +10,10 @@ public class Menu {
 	private Scanner scanner;
 
 	public Menu(CustomerListImpl customerList, EmployeeListImpl employeeList, String loginedEmployeeID) {
-		this.scanner = new Scanner(System.in);
 		this.customerList = customerList;
 		this.employeeList = employeeList;
 		this.loginedEmployeeID = loginedEmployeeID;
-		
+		this.scanner = new Scanner(System.in);
 	}
 
 	public void printMainMenu() {
@@ -26,8 +25,8 @@ public class Menu {
 		System.out.println("\nEnter 0 for EXIT.");
 	}
 
-	public void excuteMenu(int selectedMenu) {
-		
+	public void excuteSelectedMenu(int selectedMenu) {
+
 		switch (selectedMenu) {
 		case 0: {
 			System.out.println("Good Bye...");
@@ -54,8 +53,7 @@ public class Menu {
 		String sexStr = getUserInputStr("Sex (M/F)");
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 
-		
-		Sales sales = (Sales)employeeList.search(loginedEmployeeID);
+		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
 		if (sales.createCustomer(accountNumber, address, age, customerID, job, name, phoneNumber, rrn, sex)) {
 			System.out.println("Customer added successfully.");
 		} else
