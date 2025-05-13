@@ -7,7 +7,7 @@ public class InsuranceProductListImpl implements InsuranceProductList {
 	private int index = 1;
 
 	public InsuranceProductListImpl(){
-		insuranceProducts = new ArrayList<>();
+		this.insuranceProducts = new ArrayList<>();
 	}
 
 	/**
