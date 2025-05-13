@@ -129,6 +129,7 @@ public class Menu {
 		}
 	}
 
+	
 	public int getUserSelectInt() {
 		System.out.print(">> ");
 		return Integer.parseInt(scanner.nextLine());
@@ -140,8 +141,16 @@ public class Menu {
 	}
 
 	private String getUserInputStr(String title) {
-		System.out.print(title + ": ");
-		return scanner.nextLine();
+		
+		String input ="";
+		do {
+			System.out.print(title + ": ");
+			input = scanner.nextLine().trim();
+			if(input.isEmpty()) {
+				System.out.println("* this field cannot be null.");
+			}
+		}while(input.isEmpty());
+		return input;
 	}
 
 	private int getUserInputInt(String title) {
