@@ -1,3 +1,4 @@
+package main;
 public interface InsuranceProductList {
 
 	public boolean delete(String productID);
