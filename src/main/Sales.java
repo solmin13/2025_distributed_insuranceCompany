@@ -1,4 +1,5 @@
 package main;
+import java.util.*;
 
 public class Sales extends Employee {
 
@@ -33,6 +34,9 @@ public class Sales extends Employee {
 	public Customer getCustomer(String customerId) {
 		return customerList.search(customerId);
 	}
+	public ArrayList<Customer> getAllCustomer() {
+		return customerList.getAll();
+	}
 
 	/**
 	 *
@@ -57,9 +61,9 @@ public class Sales extends Employee {
 	 *
 	 * @param CustomerID
 	 */
-//	public boolean deleteCustomer(String CustomerID){
-//		return CustomerList.delete(CustomerID);
-//	}
+	public boolean deleteCustomer(String CustomerID){
+		return customerList.delete(CustomerID);
+	}
 
 	/**
 	 *

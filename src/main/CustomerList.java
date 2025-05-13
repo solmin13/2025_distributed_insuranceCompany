@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 public interface CustomerList {
 
 	/**
@@ -25,5 +27,7 @@ public interface CustomerList {
 	 * @param customer
 	 */
 	public boolean update(Customer customer);
+	
+	public ArrayList<Customer> getAll();
 
 }

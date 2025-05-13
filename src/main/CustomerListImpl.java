@@ -48,4 +48,9 @@ public class CustomerListImpl implements CustomerList {
 		return false;
 	}
 
+	@Override
+	public ArrayList<Customer> getAll() {
+		return this.customers;
+	}
+
 }
