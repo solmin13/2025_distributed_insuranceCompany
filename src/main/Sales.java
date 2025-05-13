@@ -1,15 +1,15 @@
 package main;
+
 import java.util.*;
 
 public class Sales extends Employee {
 
 	public CustomerList customerList;
-	
+
 	public Sales(int numOfEmployees, EmployeeType employeeType, CustomerList customerList) {
 		super(numOfEmployees, employeeType);
 		this.customerList = customerList;
 	}
-
 
 	/**
 	 * 
@@ -23,10 +23,10 @@ public class Sales extends Employee {
 	 * @param rrn;
 	 * @param sex;
 	 */
-	public boolean createCustomer(String accountNumber, String address, int age, String customerID, String job, String name,
-			String phoneNumber, String rrn, Sex sex) {
-		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).customerID(customerID).job(job)
-				.name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
+	public boolean createCustomer(String accountNumber, String address, int age, String customerID, String job,
+			String name, String phoneNumber, String rrn, Sex sex) {
+		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age)
+				.customerID(customerID).job(job).name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
 		System.out.println(customer);
 		return customerList.insert(customer);
 	}
@@ -34,17 +34,19 @@ public class Sales extends Employee {
 	public Customer getCustomer(String customerId) {
 		return customerList.search(customerId);
 	}
+
 	public ArrayList<Customer> getAllCustomer() {
 		return customerList.getAll();
 	}
+
 	/**
 	 *
 	 * @param Customer
 	 */
-	public boolean updateCustomer(String accountNumber, String address, int age, String customerID, String job, String name,
-			String phoneNumber, String rrn, Sex sex){
-		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).customerID(customerID).job(job)
-				.name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
+	public boolean updateCustomer(String accountNumber, String address, int age, String customerID, String job,
+			String name, String phoneNumber, String rrn, Sex sex) {
+		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age)
+				.customerID(customerID).job(job).name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
 		return customerList.update(customer);
 	}
 	/**
@@ -70,7 +72,7 @@ public class Sales extends Employee {
 	 *
 	 * @param CustomerID
 	 */
-	public boolean deleteCustomer(String CustomerID){
+	public boolean deleteCustomer(String CustomerID) {
 		return customerList.delete(CustomerID);
 	}
 
@@ -81,7 +83,6 @@ public class Sales extends Employee {
 //	public boolean updateContract(Contract Contract){
 //		return ContractList.update(Contract);
 //	}
-
 
 //
 //	}

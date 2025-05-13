@@ -16,7 +16,6 @@ public class EmployeeListImpl implements EmployeeList {
 	 * @param employeeID
 	 */
 	public boolean delete(String employeeID) {
-// Iterator瑜� �ъ�⑺���� ConcurrentModificationException�� 諛⑹���硫댁�� ������寃� ����
 		Iterator<Employee> iterator = employees.iterator();
 		while (iterator.hasNext()) {
 			Employee employee = iterator.next();

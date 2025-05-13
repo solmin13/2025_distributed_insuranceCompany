@@ -5,6 +5,8 @@ import main.Employee.EmployeeType;
 public class LoadData {
 	private CustomerListImpl customerList;
 	private EmployeeListImpl employeeList;
+	private InsuranceProductList insuranceProductList;
+	
 	public LoadData(CustomerListImpl customerList,EmployeeListImpl employeeList) {
 		this.customerList = customerList;
 		this.employeeList = employeeList;
@@ -26,6 +28,14 @@ public class LoadData {
 			Sales sales = new Sales(numOfEmployees, EmployeeType.Sales, customerList);
 			employeeList.insert(sales);
 		}
+		for (int i = 0; i < 3; i++) { // add temp three Sales
+			int numOfEmployees = employeeList.employees.size();
+			ProductManagement productManagement = new ProductManagement(numOfEmployees, EmployeeType.ProductManagement, customerList);
+			employeeList.insert(productManagement);
+		}
 
+	}
+	public void loadInsuranceProductData() {
+		
 	}
 }

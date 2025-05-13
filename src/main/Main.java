@@ -16,14 +16,16 @@ public class Main {
 	public static void main(String[] args) {
 		customerList = new CustomerListImpl();
 		employeeList = new EmployeeListImpl();
+		insuranceProductList = new InsuranceProductListImpl();
 		loadData = new LoadData(customerList, employeeList);
 
 		loadData.loadCustomerData();
 		loadData.loadEmployeeData();
+		loadData.loadInsuranceProductData();
+		
+		loginedEmployee = login("6");
 
-		loginedEmployee = login("1");
-
-		Menu menu = new Menu(customerList, employeeList, loginedEmployee);
+		Menu menu = new Menu(customerList, employeeList,insuranceProductList, loginedEmployee);
 		while (true) {
 			menu.printMainMenu();
 			int selectedMenu = menu.getUserSelectInt();

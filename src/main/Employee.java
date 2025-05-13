@@ -10,7 +10,7 @@ public class Employee {
 	}
 
 	public Employee(int numOfEmployees, EmployeeType employeeType) {
-		this.employeeID = Integer.toString(numOfEmployees);
+		this.employeeID = Integer.toString(numOfEmployees+1);
 		this.employeeType = employeeType;
 	}
 
@@ -18,8 +18,8 @@ public class Employee {
 		return employeeID;
 	}
 
-	public String getEmployeeType() {
-		return employeeID;
+	public EmployeeType getEmployeeType() {
+		return employeeType;
 	}
 
 }
