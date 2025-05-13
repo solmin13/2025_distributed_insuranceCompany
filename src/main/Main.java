@@ -6,11 +6,12 @@ import main.Employee.EmployeeType;
 
 public class Main {
 
-	private static String loginedEmployeeID;
+	private static Employee loginedEmployee;
 	private static Menu menu;
 	private static LoadData loadData;
 	private static CustomerListImpl customerList;
 	private static EmployeeListImpl employeeList;
+	private static InsuranceProductList insuranceProductList;
 
 	public static void main(String[] args) {
 		customerList = new CustomerListImpl();
@@ -20,15 +21,19 @@ public class Main {
 		loadData.loadCustomerData();
 		loadData.loadEmployeeData();
 
-		loginedEmployeeID = "1"; // TODO: implement login
-		
-		Menu menu = new Menu(customerList, employeeList, loginedEmployeeID);
+		loginedEmployee = login("1");
+
+		Menu menu = new Menu(customerList, employeeList, loginedEmployee);
 		while (true) {
 			menu.printMainMenu();
 			int selectedMenu = menu.getUserSelectInt();
 			menu.excuteSelectedMenu(selectedMenu);
 		}
 
+	}
+
+	public static Employee login(String loginID) {
+		return employeeList.search(loginID);
 	}
 
 }

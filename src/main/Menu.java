@@ -4,15 +4,16 @@ import java.util.*;
 
 public class Menu {
 
+	private Employee loginedEmployee;
 	private CustomerListImpl customerList;
 	private EmployeeListImpl employeeList;
-	private String loginedEmployeeID;
 	private Scanner scanner;
 
-	public Menu(CustomerListImpl customerList, EmployeeListImpl employeeList, String loginedEmployeeID) {
+	public Menu(CustomerListImpl customerList, EmployeeListImpl employeeList, Employee loginedEmployee) {
+		this.loginedEmployee =loginedEmployee;
 		this.customerList = customerList;
 		this.employeeList = employeeList;
-		this.loginedEmployeeID = loginedEmployeeID;
+
 		this.scanner = new Scanner(System.in);
 	}
 
@@ -26,7 +27,7 @@ public class Menu {
 	}
 
 	public void excuteSelectedMenu(int selectedMenu) {
-
+		
 		switch (selectedMenu) {
 		case 0: {
 			System.out.println("Good Bye...");
@@ -60,7 +61,7 @@ public class Menu {
 		String sexStr = getUserInputStr("Sex (M/F)");
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 
-		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+		Sales sales = (Sales) loginedEmployee;
 		if (sales.createCustomer(accountNumber, address, age, customerID, job, name, phoneNumber, rrn, sex)) {
 			System.out.println("Customer added successfully.");
 		} else
@@ -68,7 +69,7 @@ public class Menu {
 	}
 
 	private void deleteCustomer() {
-		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+		Sales sales = (Sales) loginedEmployee;
 
 		System.out.println("Customer List===");
 		ArrayList<Customer> customers = sales.getAllCustomer();
@@ -89,7 +90,7 @@ public class Menu {
 	}
 
 	private void updateCustomer() {
-		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+		Sales sales = (Sales) loginedEmployee;
 
 		System.out.println("Customer List===");
 		ArrayList<Customer> customers = sales.getAllCustomer();
@@ -120,7 +121,7 @@ public class Menu {
 	}
 
 	private void searchCustomer() {
-		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+		Sales sales = (Sales) loginedEmployee;
 
 		System.out.println("Customer List===");
 		ArrayList<Customer> customers = sales.getAllCustomer();
