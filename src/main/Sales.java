@@ -37,7 +37,16 @@ public class Sales extends Employee {
 	public ArrayList<Customer> getAllCustomer() {
 		return customerList.getAll();
 	}
-
+	/**
+	 *
+	 * @param Customer
+	 */
+	public boolean updateCustomer(String accountNumber, String address, int age, String customerID, String job, String name,
+			String phoneNumber, String rrn, Sex sex){
+		Customer customer = new Customer.Builder().accountNumber(accountNumber).address(address).age(age).customerID(customerID).job(job)
+				.name(name).rrn(rrn).sex(sex).phoneNumber(phoneNumber).build();
+		return customerList.update(customer);
+	}
 	/**
 	 *
 	 * @param ID
@@ -73,13 +82,7 @@ public class Sales extends Employee {
 //		return ContractList.update(Contract);
 //	}
 
-	/**
-	 *
-	 * @param Customer
-	 */
-//	public boolean updateCustomer(Customer Customer){
-//		return CustomerList.update(Customer);
-//	}
+
 //
 //	}
 

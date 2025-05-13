@@ -18,7 +18,7 @@ public class Menu {
 
 	public void printMainMenu() {
 		System.out.println("Select Menu:");
-		String[] menuName = { "add customer", "delete customer", "search customer", "modify customer" };
+		String[] menuName = { "add customer", "delete customer", "modify customer", "search customer" };
 		for (int i = 0; i < menuName.length; i++) {
 			System.out.printf("%d. %s \n", i + 1, menuName[i]);
 		}
@@ -38,13 +38,17 @@ public class Menu {
 		case 2: {
 			deleteCustomer();
 		}
-
+		case 3: {
+			updateCustomer();
+		}
+		case 4: {
+			searchCustomer();
+		}
 		}
 	}
 
 	private void createCustomer() {
 		System.out.println("Enter customer details:");
-
 		String accountNumber = getUserInputStr("Account Number");
 		String address = getUserInputStr("Address");
 		int age = getUserInputInt("Age");
@@ -65,24 +69,64 @@ public class Menu {
 
 	private void deleteCustomer() {
 		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
-		
+
 		System.out.println("Customer List===");
 		ArrayList<Customer> customers = sales.getAllCustomer();
-		for(Customer customer : customers) {
-			System.out.println(customer.getCustomerID() + " "+ customer.getName());
+		for (Customer customer : customers) {
+			System.out.println(customer.getCustomerID() + " " + customer.getName());
 		}
 		System.out.println("Enter customer ID to delete.");
 		String customerID = getUserInputStr("customerID");
-		
-		
+
 		String log = "";
 		if (sales.deleteCustomer(customerID)) {
-			log = "Customer("+customerID+") deleted successfully.";
+			log = "Customer(" + customerID + ") deleted successfully.";
 		} else {
 			log = "Failed: cannot delete customer(" + customerID + ")";
 		}
 		System.out.println(log);
 
+	}
+
+	private void updateCustomer() {
+		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+
+		System.out.println("Customer List===");
+		ArrayList<Customer> customers = sales.getAllCustomer();
+		for (Customer customer : customers) {
+			System.out.println(customer.getCustomerID() + " " + customer.getName());
+		}
+		System.out.println("Enter customer ID to update.");
+		String customerID = getUserInputStr("customerID");
+
+		System.out.println("Enter customer details:");
+		String accountNumber = getUserInputStr("Account Number");
+		String address = getUserInputStr("Address");
+		int age = getUserInputInt("Age");
+		String job = getUserInputStr("Job");
+		String name = getUserInputStr("Name");
+		String phoneNumber = getUserInputStr("Phone Number");
+		String rrn = getUserInputStr("RRN");
+		String sexStr = getUserInputStr("Sex (M/F)");
+		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
+		String log = "";
+		if (sales.updateCustomer(accountNumber, address, age, customerID, job, name, phoneNumber, rrn, sex)) {
+			log = "Customer(" + customerID + ") updated successfully.";
+		} else {
+			log = "Failed: cannot update customer(" + customerID + ")";
+		}
+		System.out.println(log);
+
+	}
+
+	private void searchCustomer() {
+		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+
+		System.out.println("Customer List===");
+		ArrayList<Customer> customers = sales.getAllCustomer();
+		for (Customer customer : customers) {
+			System.out.println(customer.getCustomerID() + " " + customer.getName());
+		}
 	}
 
 	public int getUserSelectInt() {
