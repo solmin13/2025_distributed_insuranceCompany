@@ -42,10 +42,7 @@ public class EmployeeListImpl implements EmployeeList {
 	 */
 	public Employee search(String employeeID) {
 		for (Employee employee : employees) {
-			System.out.println(employee.getEmployeeID());
-			System.out.println(employeeID);
 			if (employee.getEmployeeID().equals(employeeID)) {
-
 				return employee;
 			}
 		}
