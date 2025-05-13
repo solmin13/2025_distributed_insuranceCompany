@@ -35,6 +35,9 @@ public class Menu {
 		case 1: {
 			createCustomer();
 		}
+		case 2: {
+			deleteCustomer();
+		}
 
 		}
 	}
@@ -58,6 +61,28 @@ public class Menu {
 			System.out.println("Customer added successfully.");
 		} else
 			System.out.printf("false");
+	}
+
+	private void deleteCustomer() {
+		Sales sales = (Sales) employeeList.search(loginedEmployeeID);
+		
+		System.out.println("Customer List===");
+		ArrayList<Customer> customers = sales.getAllCustomer();
+		for(Customer customer : customers) {
+			System.out.println(customer.getCustomerID() + " "+ customer.getName());
+		}
+		System.out.println("Enter customer ID to delete.");
+		String customerID = getUserInputStr("customerID");
+		
+		
+		String log = "";
+		if (sales.deleteCustomer(customerID)) {
+			log = "Customer("+customerID+") deleted successfully.";
+		} else {
+			log = "Failed: cannot delete customer(" + customerID + ")";
+		}
+		System.out.println(log);
+
 	}
 
 	public int getUserSelectInt() {
