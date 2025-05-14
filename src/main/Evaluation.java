@@ -1,4 +1,4 @@
-import java.util.Date;
+package main;
 import java.util.Objects;
 
 public class Evaluation {
@@ -7,16 +7,16 @@ public class Evaluation {
 	private final String evaluationID;
 	private final String eventID;
 	private final String customerID;
-	private ProcessState evaluationState;
-	private Compensation m_Compensation;
+	private ProcessState resultOfEvaluation;
+	private Compensation compensation;
 
 	// Private constructor to be used by the Builder
 	private Evaluation(Builder builder) {
 		this.evaluationID = builder.evaluationID;
 		this.eventID = builder.eventID;
 		this.customerID = builder.customerID;
-		this.m_Compensation = builder.m_Compensation;
-		this.evaluationState = ProcessState.Awaiting;
+		this.compensation = builder.m_Compensation;
+		this.resultOfEvaluation = ProcessState.Awaiting;
 	}
 
 	// Getters
@@ -28,24 +28,28 @@ public class Evaluation {
 		return eventID;
 	}
 
-	public Compensation getM_Compensation() {return m_Compensation;}
+	public Compensation getCompensation() {return compensation;}
 
-	public ProcessState getState() {
-		return evaluationState;
+	public ProcessState getResultOfEvaluation() {
+		return resultOfEvaluation;
 	}
 
 	// setter
-	public void setM_Compensation(Compensation m_Compensation) {
-		this.m_Compensation = m_Compensation;
+	public void setCompensation(Compensation compensation) {
+		this.compensation = compensation;
 	}
 //m_Compensation
 
+
+	/**
+	 * @param isReceipt 심사 통과하려면 False, 거부하려면 False
+	 */
 	public void receiptEvaluation(boolean isReceipt){
 		if(isReceipt) {
-			this.evaluationState = ProcessState.Completed;
+			this.resultOfEvaluation = ProcessState.Completed;
 		}
 		else {
-			this.evaluationState = ProcessState.Rejected;
+			this.resultOfEvaluation = ProcessState.Rejected;
 		}
 	}
 
@@ -93,8 +97,8 @@ public class Evaluation {
 		return Objects.equals(evaluationID, that.evaluationID) &&
 						Objects.equals(eventID, that.eventID) &&
 						Objects.equals(customerID, that.customerID) &&
-						Objects.equals(evaluationState, that.evaluationState) &&
-						Objects.equals(m_Compensation, that.m_Compensation);
+						Objects.equals(resultOfEvaluation, that.resultOfEvaluation) &&
+						Objects.equals(compensation, that.compensation);
 	}
 
 }

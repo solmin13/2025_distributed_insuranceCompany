@@ -1,70 +1,53 @@
-
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.random.RandomGenerator;
+package main;
 
 /**
  * @author �ڼֹ�
  * @version 1.0
  * @created 11-5-2025 ���� 11:25:09
  */
-// public class LossAdjuster extends Employee {
-	public class LossAdjuster{
-		private EventList EventList;
-	public LossAdjuster(){
-		this.EventList = new EventListImpl();
-	}
-//	public void finalize() throws Throwable {
-//		super.finalize();
-//	}
+ public class LossAdjuster extends Employee {
+	 private final EventList EventList;
+	 public LossAdjuster(int numOfEmployees, EmployeeType employeeType) {
+			 super(numOfEmployees,employeeType);
+		 this.EventList = new EventListImpl();
+		 }
 
-	public boolean evaluateCompensation(String eventID){
-		// Need to look up customer information, class diagram needs to be modified, can't be implemented in current state
-		return false;
-	}
-
-
-	public void payCompensation() {
-		List<Compensation> compensations = EventList.searchCompensation("all", "");
-		if (compensations.isEmpty()) {
-			System.out.println("지급할 보상금이 없습니다.");
-			return;
-		}
-		System.out.println("지급할 보상금을 선택하세요:");
-		for (int i = 0; i < compensations.size(); i++) {
-			System.out.println((i + 1) + "|| " + compensations.get(i).getCompensationID()+", paidState: "+compensations.get(i).getState()+", claimsPaid: "+compensations.get(i).getClaimsPaid());
-		}
-		Scanner scanner = new Scanner(System.in);
-		int choice = scanner.nextInt();
-		scanner.nextLine(); // Consume newline
-
-		if (choice > 0 && choice <= compensations.size()) {
-			Compensation selectedCompensation = compensations.get(choice - 1);
-			System.out.println("선택한 보상 정보:");
-			System.out.println(selectedCompensation);
-			System.out.println("보상을 지급하시겠습니까? (y/n) 취소하려면 c를 입력해주세요.");
-			String confirm = scanner.nextLine();
-			if (confirm.equalsIgnoreCase("n")) {
-				System.out.println("보상 지급이 거부되었습니다.");
-				selectedCompensation.receiptCompensation(false);
-				EventList.update(selectedCompensation);
-				return;
-			} else if (confirm.equalsIgnoreCase("y")) {
-				System.out.println("보상 지급이 완료되었습니다: " + selectedCompensation.getCompensationID());
-				selectedCompensation.receiptCompensation(true);
-				EventList.update(selectedCompensation);
-			}	else if(confirm.equalsIgnoreCase("c")) {
-				System.out.println("보상 지급이 취소되었습니다.");
-			}
-			else {
-				System.out.println("잘못된 선택입니다.");
-			}
-		}
+	/**
+	 * 이벤트ID받고, 심사의 상태를 변경한다.
+	 *
+	 * @param eventID 심사할 사건의 ID
+	 * @param isReceipt 심사 결과 (true: 승인, false: 거절)
+	 * @return 심사 성공 여부 (true: 성공, false: 실패 - 해당 사건 ID가 없는 경우)
+	 */
+	public boolean evaluateCompensation(String eventID, boolean isReceipt){
+		Event targetEvent = this.EventList.searchEvent("id",eventID).getFirst();
+		if(targetEvent==null) return false;
+		Evaluation targetEvaluation = targetEvent.getM_Evaluation();
+		targetEvaluation.receiptEvaluation(isReceipt);
+		EventList.update(targetEvaluation);
+		if(isReceipt) System.out.println("보상 심사가 완료되었습니다.");
+		else System.out.println("보상 심사가 거절되었습니다.");
+		return true;
 	}
 
+	/**
+	 * 심사가 완료된 사고들의 보상금을 지급하거나 거부합니다.
+	 *
+	 * @param compensationID 지급 또는 거부할 보상금의 ID
+	 * @param isPaid         true면지급, false면 거부
+	 * @return 보상금 지급 성공시 true를, 보상금 ID가 유효하지 않거나 업데이트에 실패한 경우 false
+	 */
+	public boolean payCompensation(String compensationID, boolean isPaid) {
+		Compensation targetCompensation = this.EventList.searchCompensation("id",compensationID).getFirst();
+		if(targetCompensation==null) return false;
+		targetCompensation.setResultOfPaid(isPaid);
+		this.EventList.update(targetCompensation);
+		if(isPaid) System.out.println("보상 지급이 완료되었습니다: " + targetCompensation);
+		else System.out.println("보상 지급이 거부되었습니다.");
+		return EventList.update(targetCompensation);
+	}
 
-	//임시, 더미데이터
+	//임시, 더미데이터생성기
 	public void genrateDummy(int count){
 
 		for(int i=0;i<count;i++) {
@@ -77,15 +60,15 @@ import java.util.random.RandomGenerator;
 			Compensation c = new Compensation.Builder(CompensationID,ev.getEvaluationID(), customerID).claimsPaid((int)(Math.random()*1000000+10))
 					.build();
 
-			ev.setM_Compensation(c);
+			ev.setCompensation(c);
 			e.setM_Evaluation(ev);
 			EventList.insert(e);
 		}
 	}
 
 	public static void main(String[] args) {
-		LossAdjuster la = new LossAdjuster();
+		LossAdjuster la = new LossAdjuster(1, EmployeeType.LossAdjuster);
 		la.genrateDummy(10);
-		la.payCompensation();
+//		la.payCompensation();
 	}
 }//end LossAdjuster

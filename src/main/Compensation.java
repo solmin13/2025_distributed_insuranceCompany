@@ -59,6 +59,10 @@ public class Compensation {
 		}
 	}
 
+	public void setResultOfPaid(boolean resultOfPaid) {
+		this.resultOfPaid = resultOfPaid;
+	}
+
 	public void setClaimsPaid(int paid){
 		this.claimsPaid = paid;
   }
