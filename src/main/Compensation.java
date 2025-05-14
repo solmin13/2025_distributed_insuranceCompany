@@ -1,3 +1,4 @@
+package main;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class Compensation {
 	private final String evaluationID; // Link to an Evaluation
 	private final String customerID;   // Link to a Customer
 	private ProcessState paidState;
+	private boolean resultOfPaid;
 	private int claimsPaid;
 	// Builder Pattern
 
@@ -15,8 +17,9 @@ public class Compensation {
 		this.compensationID = builder.compensationID;
 		this.evaluationID = builder.evaluationID;
 		this.customerID = builder.customerID;
-		this.paidState = builder.paidState;
 		this.claimsPaid = builder.claimsPaid;
+		this.paidState = ProcessState.Awaiting;
+		this.resultOfPaid = false;
 	}
 
 	// Getters
@@ -38,6 +41,12 @@ public class Compensation {
 
 	public int getClaimsPaid() {
 		return claimsPaid;
+	}
+	public boolean getResultOfPaid() {
+		return resultOfPaid;
+	}
+	public ProcessState getPaidState(){
+		return paidState;
 	}
 
 	// setter?
