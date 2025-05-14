@@ -1,5 +1,6 @@
 package main;
 
+import main.Data.Customer;
 import main.Employee.Employee.EmployeeType;
 import main.Employee.LossAdjuster;
 import main.Employee.ProductManagement;

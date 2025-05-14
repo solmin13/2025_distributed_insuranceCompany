@@ -1,9 +1,9 @@
 
 package main.List;
 import java.util.ArrayList;
-import main.Compensation;
-import main.Evaluation;
-import main.Event;
+import main.Data.Compensation;
+import main.Data.Evaluation;
+import main.Data.Event;
 import main.Enum.ProcessState;
 
 public class EventListImpl implements EventList {

@@ -1,6 +1,6 @@
 package main.List;
 
-import main.InsuranceProduct;
+import main.Data.InsuranceProduct;
 
 public interface InsuranceProductList {
 

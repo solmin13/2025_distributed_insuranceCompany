@@ -3,7 +3,7 @@ package main.Employee;
 import java.util.*;
 
 import main.Enum.Sex;
-import main.InsuranceProduct;
+import main.Data.InsuranceProduct;
 import main.List.CustomerList;
 import main.List.InsuranceProductList;
 

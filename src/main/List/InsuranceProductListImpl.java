@@ -1,7 +1,7 @@
 package main.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import main.InsuranceProduct;
+import main.Data.InsuranceProduct;
 
 public class InsuranceProductListImpl implements InsuranceProductList {
 

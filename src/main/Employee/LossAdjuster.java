@@ -1,8 +1,8 @@
 package main.Employee;
 
-import main.Compensation;
-import main.Evaluation;
-import main.Event;
+import main.Data.Compensation;
+import main.Data.Evaluation;
+import main.Data.Event;
 import main.List.EventList;
 import main.List.EventListImpl;
 

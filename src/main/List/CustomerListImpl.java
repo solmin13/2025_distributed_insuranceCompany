@@ -3,7 +3,7 @@ package main.List;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import main.Customer;
+import main.Data.Customer;
 
 public class CustomerListImpl implements CustomerList {
 
