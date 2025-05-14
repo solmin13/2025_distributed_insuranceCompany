@@ -18,8 +18,7 @@ public class Event {
 	public String eventID;
 	private String eventLocation;
 	private Date receiptDate;
-	private ProcessState processState;
-	private Evaluation m_Evaluation;
+	private Evaluation evaluation;
 
 	private Event(Builder builder) {
 		this.customerID = builder.customerID;
@@ -30,8 +29,7 @@ public class Event {
 		this.eventID = builder.customerID;
 		this.eventLocation = builder.eventLocation;
 		this.receiptDate = builder.receiptDate;
-		this.m_Evaluation = builder.m_Evaluation;
-		this.processState = ProcessState.Awaiting;
+		this.evaluation = builder.m_Evaluation;
 	}
 
 	public int getClaimValue() {
@@ -66,25 +64,16 @@ public class Event {
 		return receiptDate;
 	}
 
-	public Evaluation getM_Evaluation() {
-		return m_Evaluation;
+	public Evaluation getEvaluation() {
+		return evaluation;
 	}
-	public ProcessState getState() {return processState;}
 
 
-	public void setM_Evaluation(Evaluation m_Evaluation) {
-		this.m_Evaluation = m_Evaluation;
+	public void setEvaluation(Evaluation evaluation) {
+		this.evaluation = evaluation;
 	}
 //m_Evaluation setter
 
-	public void receiptEvent(boolean isReceipt){
-		if(isReceipt) {
-			this.processState = ProcessState.Completed;
-		}
-		else {
-			this.processState = ProcessState.Rejected;
-		}
-	}
 
 
 	public static class Builder {
@@ -151,7 +140,7 @@ public class Event {
 				", eventID=" + eventID +
 				", eventLocation='" + eventLocation + '\'' +
 				", receiptDate=" + receiptDate +
-				", m_Evaluation=" + m_Evaluation +
+				", m_Evaluation=" + evaluation +
 				'}';
 	}
 	public boolean equals(Object o) {
@@ -161,7 +150,8 @@ public class Event {
 		if (null == o || getClass() != o.getClass()) return false;
 		Event event;
     event = (Event) o;
-    return claimValue == event.claimValue && Objects.equals(customerID, event.customerID) && Objects.equals(documents, event.documents) && Objects.equals(eventDate, event.eventDate) && Objects.equals(eventDescription, event.eventDescription) && Objects.equals(eventID, event.eventID) && Objects.equals(eventLocation, event.eventLocation) && Objects.equals(receiptDate, event.receiptDate) && Objects.equals(m_Evaluation, event.m_Evaluation);
+    return claimValue == event.claimValue && Objects.equals(customerID, event.customerID) && Objects.equals(documents, event.documents) && Objects.equals(eventDate, event.eventDate) && Objects.equals(eventDescription, event.eventDescription) && Objects.equals(eventID, event.eventID) && Objects.equals(eventLocation, event.eventLocation) && Objects.equals(receiptDate, event.receiptDate) && Objects.equals(
+				evaluation, event.evaluation);
 	}
 
 }

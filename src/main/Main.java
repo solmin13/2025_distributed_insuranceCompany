@@ -23,7 +23,7 @@ public class Main {
 		loadData.loadEmployeeData();
 		loadData.loadInsuranceProductData();
 		
-		loginedEmployee = login("6");
+		loginedEmployee = login("7");
 
 		Menu menu = new Menu(customerList, employeeList,insuranceProductList, loginedEmployee);
 		while (true) {

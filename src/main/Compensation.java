@@ -1,25 +1,28 @@
 package main;
-import java.util.Date;
 import java.util.Objects;
 
 public class Compensation {
+
+	/**
+	 * Class 다이어그램과 다른점 몇가지
+	 * 1. resultOFPaid와 PaidState를 합침
+	 */
+
 
 	// Example Fields
 	private final String compensationID;
 	private final String evaluationID; // Link to an Evaluation
 	private final String customerID;   // Link to a Customer
-	private ProcessState paidState;
-	private boolean resultOfPaid;
-	private int claimsPaid;
+	private ProcessState resultOfPaid;
+	private int amountOfPaid;
 	// Builder Pattern
 
 	private Compensation(Builder builder) {
 		this.compensationID = builder.compensationID;
 		this.evaluationID = builder.evaluationID;
 		this.customerID = builder.customerID;
-		this.claimsPaid = builder.claimsPaid;
-		this.paidState = ProcessState.Awaiting;
-		this.resultOfPaid = false;
+		this.amountOfPaid = builder.claimsPaid;
+		this.resultOfPaid = ProcessState.Awaiting;
 	}
 
 	// Getters
@@ -36,35 +39,28 @@ public class Compensation {
 	}
 
 	public ProcessState getState() {
-		return paidState;
-	}
-
-	public int getClaimsPaid() {
-		return claimsPaid;
-	}
-	public boolean getResultOfPaid() {
 		return resultOfPaid;
 	}
-	public ProcessState getPaidState(){
-		return paidState;
+
+	public int getAmountOfPaid() {
+		return amountOfPaid;
+	}
+	public ProcessState getResultOfPaid(){
+		return resultOfPaid;
 	}
 
 	// setter?
 	public void receiptCompensation(boolean isReceipt){
 		if(isReceipt) {
-			this.paidState = ProcessState.Completed;
+			this.resultOfPaid = ProcessState.Completed;
 		}
 		else {
-			this.paidState = ProcessState.Rejected;
+			this.resultOfPaid = ProcessState.Rejected;
 		}
 	}
 
-	public void setResultOfPaid(boolean resultOfPaid) {
-		this.resultOfPaid = resultOfPaid;
-	}
-
-	public void setClaimsPaid(int paid){
-		this.claimsPaid = paid;
+	public void setAmountOfPaid(int paid){
+		this.amountOfPaid = paid;
   }
 
 	public static class Builder {
@@ -107,8 +103,8 @@ public class Compensation {
 				"compensationID='" + compensationID + '\'' +
 				", evaluationID='" + evaluationID + '\'' +
 				", customerID='" + customerID + '\'' +
-				", paidState=" + paidState +
-				", claimsPaid=" + claimsPaid +
+				", paidState=" + resultOfPaid +
+				", claimsPaid=" + amountOfPaid +
 				'}';
 	}
 
@@ -117,7 +113,8 @@ public class Compensation {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Compensation that = (Compensation) o;
-		return claimsPaid == that.claimsPaid && Objects.equals(compensationID, that.compensationID) && Objects.equals(evaluationID, that.evaluationID) && Objects.equals(customerID, that.customerID) && paidState == that.paidState;
+		return amountOfPaid == that.amountOfPaid && Objects.equals(compensationID, that.compensationID) && Objects.equals(evaluationID, that.evaluationID) && Objects.equals(customerID, that.customerID) && resultOfPaid
+				== that.resultOfPaid;
 	}
 
 }

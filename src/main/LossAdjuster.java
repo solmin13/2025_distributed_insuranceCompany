@@ -22,7 +22,7 @@ package main;
 	public boolean evaluateCompensation(String eventID, boolean isReceipt){
 		Event targetEvent = this.EventList.searchEvent("id",eventID).getFirst();
 		if(targetEvent==null) return false;
-		Evaluation targetEvaluation = targetEvent.getM_Evaluation();
+		Evaluation targetEvaluation = targetEvent.getEvaluation();
 		targetEvaluation.receiptEvaluation(isReceipt);
 		EventList.update(targetEvaluation);
 		if(isReceipt) System.out.println("보상 심사가 완료되었습니다.");
@@ -40,9 +40,9 @@ package main;
 	public boolean payCompensation(String compensationID, boolean isPaid) {
 		Compensation targetCompensation = this.EventList.searchCompensation("id",compensationID).getFirst();
 		if(targetCompensation==null) return false;
-		targetCompensation.setResultOfPaid(isPaid);
+		targetCompensation.receiptCompensation(isPaid);
 		this.EventList.update(targetCompensation);
-		if(isPaid) System.out.println("보상 지급이 완료되었습니다: " + targetCompensation);
+		if(isPaid) System.out.println("보상 지급이 완료되었습니다.");
 		else System.out.println("보상 지급이 거부되었습니다.");
 		return EventList.update(targetCompensation);
 	}
@@ -61,9 +61,13 @@ package main;
 					.build();
 
 			ev.setCompensation(c);
-			e.setM_Evaluation(ev);
+			e.setEvaluation(ev);
 			EventList.insert(e);
 		}
+	}
+
+	public EventList getEventList(){
+		return this.EventList;
 	}
 
 	public static void main(String[] args) {

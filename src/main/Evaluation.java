@@ -28,6 +28,8 @@ public class Evaluation {
 		return eventID;
 	}
 
+	public String getCustomerID() {return customerID;}
+
 	public Compensation getCompensation() {return compensation;}
 
 	public ProcessState getResultOfEvaluation() {

@@ -51,7 +51,7 @@ public class EventListImpl implements EventList {
 					if(event.toString().toLowerCase().contains(value.toLowerCase())) result.add(event);
 					break;
 				case "state":
-					if(event.getState() == ProcessState.fromString(value)) result.add(event);
+					if(event.getEvaluation().getResultOfEvaluation() == ProcessState.fromString(value)) result.add(event);
 					break;
 				case "id":
 					if(event.getEventID().equals(value)) result.add(event);
@@ -71,7 +71,7 @@ public class EventListImpl implements EventList {
 	public ArrayList<Evaluation> searchEvaluation(String key, String value) {
 		ArrayList<Evaluation> result = new ArrayList<>();
 		for(Event event : this.Events){
-			Evaluation evaluation = event.getM_Evaluation();
+			Evaluation evaluation = event.getEvaluation();
 			if(evaluation==null) continue;
 			switch (key.toLowerCase()){
 				case "keyword":
@@ -98,7 +98,7 @@ public class EventListImpl implements EventList {
 	public ArrayList<Compensation> searchCompensation(String key, String value) {
 		ArrayList<Compensation> result = new ArrayList<>();
 		for(Event event : this.Events){
-			Compensation compensation = event.getM_Evaluation().getCompensation();
+			Compensation compensation = event.getEvaluation().getCompensation();
 			if(compensation==null) continue;
 			switch (key.toLowerCase()){
 				case "keyword":
@@ -140,9 +140,9 @@ public class EventListImpl implements EventList {
 		// 수정된 코드
     // 리스트에서 Event 객체를 가져옵니다.
     for (Event eventInList : Events) {
-      Evaluation existingEvaluation = eventInList.getM_Evaluation();
+      Evaluation existingEvaluation = eventInList.getEvaluation();
       if (existingEvaluation.getEvaluationID().equals(updatedEvaluation.getEvaluationID())) {
-        eventInList.setM_Evaluation(updatedEvaluation);
+        eventInList.setEvaluation(updatedEvaluation);
         return true;
       }
     }
@@ -152,9 +152,9 @@ public class EventListImpl implements EventList {
 	@Override
 	public boolean update(Compensation compensation) {
     for (Event event : Events) {
-      Compensation existingCompensation = event.getM_Evaluation().getCompensation();
+      Compensation existingCompensation = event.getEvaluation().getCompensation();
       if (existingCompensation.getCompensationID().equals(compensation.getCompensationID())) {
-        event.getM_Evaluation().setCompensation(compensation);
+        event.getEvaluation().setCompensation(compensation);
         return true;
       }
     }
