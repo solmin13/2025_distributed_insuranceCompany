@@ -31,6 +31,10 @@ public class Menu {
 		} else if (loginedEmployeeType == EmployeeType.ProductManagement) {
 			String[] productManagementMenuList = { "상품 등록", "상품 수정", "상품 조회", "상품 삭제" };
 			menuList = productManagementMenuList;
+		} else if (loginedEmployeeType== EmployeeType.LossAdjuster) {
+			String[] lossAdjusterMenuList = {"보상 지급", "보상 심사"};
+			menuList = lossAdjusterMenuList;
+
 		}
 
 		System.out.println("Select Menu:");
@@ -79,6 +83,21 @@ public class Menu {
 			default:
 				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
 				break;
+			}
+		} else if (loginedEmployeeType == EmployeeType.LossAdjuster) {
+			switch (selectedMenu) {
+				case 0:
+					System.out.println("Good Bye...");
+					System.exit(0);
+				case 1:
+					payCompensation();
+					break;
+				case 2:
+					evaluateCompensation();
+					break;
+				default:
+					System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+					break;
 			}
 		}
 
@@ -170,9 +189,19 @@ public class Menu {
 		return Integer.parseInt(scanner.nextLine());
 	}
 
-	public String getUserSelectStr() {
-		System.out.print(">> ");
-		return scanner.nextLine();
+	public UserSelection getUserSelectYorN() {
+		System.out.print("Yes/No/Cancel >> ");
+		String userInput = scanner.nextLine();
+    return switch (userInput.toLowerCase()) {
+      case "yes", "y" -> UserSelection.Yes;
+      case "no", "n" -> UserSelection.No;
+      case "cancel", "c" -> UserSelection.Cancel;
+      default -> {
+        System.out.println("잘못된 입력입니다. 다시 시도해주세요");
+        yield getUserSelectYorN();
+      }
+    };
+
 	}
 
 	private String getUserInputStr(String title) {
@@ -403,4 +432,46 @@ public class Menu {
 		}
 		return sex;
 	}
+
+	//----------------LossAdjuster--------------------------------------
+
+	/**
+	 * search관련 메소드 분리되지 않음
+	 */
+	private void payCompensation(){
+		LossAdjuster lossAdjuster = (LossAdjuster) loginedEmployee; //관리자 로딩
+
+		EventList eventList = lossAdjuster.getEventList(); //컴포지션... 관리자가 리스트를 들고 있음, 가져와야함
+
+		//보상 지급 대기중인 보상 조회 로직, 라인넘버 통해서 선택함,
+		System.out.println("===CompensationList===");
+		ArrayList<Compensation> compensations = eventList.searchCompensation("state","Awaiting"); // 일반 보상 지급이 아직 되지 않은 경우만 골라오긴 하는데, 보상 지급 결정이 내려졌는지가 반영이 되야할것같음.. DB 마렵네
+		for(int i = 0; i<compensations.size(); i++){
+			Compensation targetCompensation = compensations.get(i);
+			System.out.println((i+1)+": Customer:"+targetCompensation.getCustomerID()+", Amount charged: "+targetCompensation.getAmountOfPaid());
+		}
+		System.out.println("Select Line Number: ");
+		Compensation selectedCompensation = compensations.get(getUserSelectInt());
+		Evaluation selectedEvaluation = eventList.searchEvaluation("id",selectedCompensation.getEvaluationID()).getFirst();
+		Event selectedEvent = eventList.searchEvent("id",selectedEvaluation.getEventID()).getFirst();
+
+		//상세정보 표시 및 보상 지급 선택
+		System.out.println("==상세정보==\n"+selectedEvent+", Amount charged: "+selectedEvaluation.getCompensation().getAmountOfPaid());
+		System.out.println("보상을 지급하시겠습니까?");
+		switch (getUserSelectYorN()){
+			case UserSelection.Yes :
+				if(!lossAdjuster.payCompensation(selectedEvaluation.getCompensation().getCompensationID(), true))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
+				break;
+			case UserSelection.No :
+				if(!lossAdjuster.payCompensation(selectedEvaluation.getCompensation().getCompensationID(), false))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
+				break;
+			case UserSelection.Cancel :
+				System.out.println("보상 지급이 취소되었습니다.");
+				break;
+		}
+	}
+	private void evaluateCompensation(){
+
+	}
+
 }
