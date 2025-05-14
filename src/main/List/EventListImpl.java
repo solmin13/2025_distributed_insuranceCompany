@@ -1,6 +1,10 @@
 
-package main;
+package main.List;
 import java.util.ArrayList;
+import main.Compensation;
+import main.Evaluation;
+import main.Event;
+import main.Enum.ProcessState;
 
 public class EventListImpl implements EventList {
 

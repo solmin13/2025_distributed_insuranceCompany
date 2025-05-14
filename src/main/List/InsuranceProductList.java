@@ -1,4 +1,7 @@
-package main;
+package main.List;
+
+import main.InsuranceProduct;
+
 public interface InsuranceProductList {
 
 	public boolean delete(String productID);

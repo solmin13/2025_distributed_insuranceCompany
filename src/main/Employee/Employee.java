@@ -1,4 +1,4 @@
-package main;
+package main.Employee;
 
 public class Employee {
 

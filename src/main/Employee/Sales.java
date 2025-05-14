@@ -1,6 +1,9 @@
-package main;
+package main.Employee;
 
 import java.util.*;
+import main.Customer;
+import main.Enum.Sex;
+import main.List.CustomerList;
 
 public class Sales extends Employee {
 

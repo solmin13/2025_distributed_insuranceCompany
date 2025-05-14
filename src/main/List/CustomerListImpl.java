@@ -1,8 +1,9 @@
-package main;
+package main.List;
 
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import main.Customer;
 
 public class CustomerListImpl implements CustomerList {
 

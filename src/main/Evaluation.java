@@ -1,5 +1,6 @@
 package main;
 import java.util.Objects;
+import main.Enum.ProcessState;
 
 public class Evaluation {
 

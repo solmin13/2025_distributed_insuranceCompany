@@ -2,7 +2,19 @@ package main;
 
 import java.util.*;
 
-import main.Employee.EmployeeType;
+import main.Employee.Employee;
+import main.Employee.Employee.EmployeeType;
+import main.Employee.LossAdjuster;
+import main.Employee.ProductManagement;
+import main.Employee.Sales;
+import main.Enum.Sex;
+import main.Enum.UserSelection;
+import main.List.CustomerList;
+import main.List.CustomerListImpl;
+import main.List.EmployeeList;
+import main.List.EmployeeListImpl;
+import main.List.EventList;
+import main.List.InsuranceProductList;
 
 public class Menu {
 
@@ -445,6 +457,9 @@ public class Menu {
 		//보상 지급 대기중인 보상 조회 로직, 라인넘버 통해서 선택함,
 		System.out.println("===CompensationList===");
 		ArrayList<Event> events = eventList.searchCompensation("state","Awaiting"); // 일반 보상 지급이 아직 되지 않은 경우만 골라오긴 하는데, 보상 지급 결정이 내려졌는지가 반영이 되야할것같음.. DB 마렵네
+		if(events.size() <= 0){
+			System.out.println("보상 지급 대기중인 항목이 없습니다");
+		}
 		for(int i = 0; i<events.size(); i++){
 			Compensation targetCompensation = events.get(i).getEvaluation().getCompensation();
 			System.out.println((i+1)+": Customer:"+targetCompensation.getCustomerID()+", Amount charged: "+targetCompensation.getAmountOfPaid());

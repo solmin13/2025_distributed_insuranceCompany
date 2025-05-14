@@ -1,4 +1,7 @@
 package main;
+
+import main.Enum.Sex;
+
 public class Customer {
 	private final String accountNumber;
 	private final String address;
@@ -8,7 +11,7 @@ public class Customer {
 	private final String name;
 	private final String phoneNumber;
 	private final String rrn;
-	private final Sex sex; 
+	private final Sex sex;
 
 	private Customer(Builder builder) {
 		this.accountNumber = builder.accountNumber;

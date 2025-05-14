@@ -1,8 +1,11 @@
-package main;
+package main.Employee;
 
 import java.util.*;
 
-import main.Employee.EmployeeType;
+import main.Enum.Sex;
+import main.InsuranceProduct;
+import main.List.CustomerList;
+import main.List.InsuranceProductList;
 
 public class ProductManagement extends Employee {
 
