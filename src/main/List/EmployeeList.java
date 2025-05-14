@@ -1,5 +1,7 @@
-package main;
+package main.List;
 
+
+import main.Employee.Employee;
 
 public interface EmployeeList {
 		/**

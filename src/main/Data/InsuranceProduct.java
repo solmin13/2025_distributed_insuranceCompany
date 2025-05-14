@@ -1,5 +1,7 @@
-package main;
+package main.Data;
 import java.util.HashMap;
+import main.Enum.Sex;
+
 public class InsuranceProduct {
 
 	private HashMap<String,String> coverageByAge;

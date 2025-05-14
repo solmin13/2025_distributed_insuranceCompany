@@ -2,13 +2,30 @@ package main;
 
 import java.util.*;
 
-import main.Employee.EmployeeType;
+import main.Data.Compensation;
+import main.Data.Customer;
+import main.Data.Evaluation;
+import main.Data.Event;
+import main.Data.InsuranceProduct;
+import main.Employee.Employee;
+import main.Employee.Employee.EmployeeType;
+import main.Employee.LossAdjuster;
+import main.Employee.ProductManagement;
+import main.Employee.Sales;
+import main.Enum.Sex;
+import main.Enum.UserSelection;
+import main.List.CustomerList;
+import main.List.CustomerListImpl;
+import main.List.EmployeeList;
+import main.List.EmployeeListImpl;
+import main.List.EventList;
+import main.List.InsuranceProductList;
 
 public class Menu {
 
 	private Employee loginedEmployee;
-	private CustomerListImpl customerList;
-	private EmployeeListImpl employeeList;
+	private CustomerList customerList;
+	private EmployeeList employeeList;
 	private InsuranceProductList insuranceProductList;
 	private Scanner scanner;
 
@@ -32,8 +49,7 @@ public class Menu {
 			String[] productManagementMenuList = { "상품 등록", "상품 수정", "상품 조회", "상품 삭제" };
 			menuList = productManagementMenuList;
 		} else if (loginedEmployeeType== EmployeeType.LossAdjuster) {
-			String[] lossAdjusterMenuList = {"보상 지급", "보상 심사"};
-			menuList = lossAdjusterMenuList;
+      menuList = new String[]{"보상 지급", "보상 심사"};
 
 		}
 
@@ -108,7 +124,7 @@ public class Menu {
 		String accountNumber = getUserInputStr("Account Number");
 		String address = getUserInputStr("Address");
 		int age = getUserInputInt("Age");
-		String customerID = Integer.toString(customerList.customers.size());
+		String customerID = Integer.toString(customerList.getAll().size());
 		String job = getUserInputStr("Job");
 		String name = getUserInputStr("Name");
 		String phoneNumber = getUserInputStr("Phone Number");
@@ -445,33 +461,126 @@ public class Menu {
 
 		//보상 지급 대기중인 보상 조회 로직, 라인넘버 통해서 선택함,
 		System.out.println("===CompensationList===");
-		ArrayList<Compensation> compensations = eventList.searchCompensation("state","Awaiting"); // 일반 보상 지급이 아직 되지 않은 경우만 골라오긴 하는데, 보상 지급 결정이 내려졌는지가 반영이 되야할것같음.. DB 마렵네
-		for(int i = 0; i<compensations.size(); i++){
-			Compensation targetCompensation = compensations.get(i);
+		ArrayList<Event> events = eventList.searchCompensation("state","Awaiting"); // 일반 보상 지급이 아직 되지 않은 경우만 골라오긴 하는데, 보상 지급 결정이 내려졌는지가 반영이 되야할것같음.. DB 마렵네
+		if(events.size() <= 0){
+			System.out.println("보상 지급 대기중인 항목이 없습니다");
+			return;
+		}
+		for(int i = 0; i<events.size(); i++){
+			Compensation targetCompensation = events.get(i).getEvaluation().getCompensation();
 			System.out.println((i+1)+": Customer:"+targetCompensation.getCustomerID()+", Amount charged: "+targetCompensation.getAmountOfPaid());
 		}
 		System.out.println("Select Line Number: ");
-		Compensation selectedCompensation = compensations.get(getUserSelectInt());
-		Evaluation selectedEvaluation = eventList.searchEvaluation("id",selectedCompensation.getEvaluationID()).getFirst();
-		Event selectedEvent = eventList.searchEvent("id",selectedEvaluation.getEventID()).getFirst();
+		int userSelectNum = getUserSelectInt()-1;
+		if(userSelectNum >= events.size()) {
+			System.out.println("선택 범위를 초과했습니다. 다시 시도해주세요"); // Exception으로 바꾸면 좋을텐데
+			return;
+		}
+		Event selectedEvent = events.get(userSelectNum);
+		Evaluation selectedEvaluation = selectedEvent.getEvaluation();
+		Compensation selectedCompensation = selectedEvaluation.getCompensation();
 
 		//상세정보 표시 및 보상 지급 선택
 		System.out.println("==상세정보==\n"+selectedEvent+", Amount charged: "+selectedEvaluation.getCompensation().getAmountOfPaid());
 		System.out.println("보상을 지급하시겠습니까?");
 		switch (getUserSelectYorN()){
 			case UserSelection.Yes :
-				if(!lossAdjuster.payCompensation(selectedEvaluation.getCompensation().getCompensationID(), true))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
+				if(!lossAdjuster.payCompensation(selectedCompensation.getCompensationID(), true))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
 				break;
 			case UserSelection.No :
-				if(!lossAdjuster.payCompensation(selectedEvaluation.getCompensation().getCompensationID(), false))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
+				if(!lossAdjuster.payCompensation(selectedCompensation.getCompensationID(), false))System.out.println("시스템 오류로 인해 보상을 지급할 수 없습니다");
 				break;
 			case UserSelection.Cancel :
 				System.out.println("보상 지급이 취소되었습니다.");
 				break;
 		}
 	}
+
 	private void evaluateCompensation(){
+		LossAdjuster lossAdjuster = (LossAdjuster) loginedEmployee; //관리자 로딩
+
+		EventList eventList = lossAdjuster.getEventList(); //컴포지션... 관리자가 리스트를 들고 있음, 가져와야함
+
+		Event selectedEvent = eventDetailVeiw(eventList);
+		if(selectedEvent == null){
+			System.out.println("메뉴로 돌아갑니다.");
+			return;
+		}
+		Customer selectedCustomer = CustomerDetailView(selectedEvent);
+		if(selectedCustomer == null){
+			System.out.println("메뉴로 돌아갑니다.");
+			return;
+		}
+		//계약이 아직 구현되지 않아, 계약 조회는 이후 구현
+		System.out.println("심사 결과를 선택해주세요 pass = Yes, nonpass = No, cancel = Cancel");
+		switch (getUserSelectYorN()){
+			case UserSelection.Yes :
+				if(!lossAdjuster.evaluateCompensation(selectedEvent.getEventID(), true))System.out.println("시스템 오류로 인해 심사를 진행할 수 없습니다");
+				break;
+			case UserSelection.No :
+				if(!lossAdjuster.payCompensation(selectedEvent.getEventID(), false))System.out.println("시스템 오류로 인해 심사를 진행할 수 없습니다");
+				break;
+			case UserSelection.Cancel :
+				System.out.println("심사가 취소되었습니다.");
+				break;
+		}
+
 
 	}
+
+	private Customer CustomerDetailView(Event selectedEvent) {
+		Customer selectedCustomer = customerList.search(selectedEvent.getCustomerID());
+		if(selectedCustomer == null){
+			System.out.println("해당하는 고객이 없습니다.");
+			return null;
+		}
+		System.out.println("===CustomerDetail===\n"+selectedCustomer);
+		System.out.println("고객정보 확인이 끝나셨다면 Yes를 눌러주세요");
+		switch (getUserSelectYorN()) {
+			case UserSelection.Yes:
+				return selectedCustomer;
+			case UserSelection.No:
+				System.out.println("고객 상세 정보 조회로 돌아갑니다.");
+			return CustomerDetailView(selectedEvent);
+			case UserSelection.Cancel:
+				System.out.println("보상 심사가 취소되었습니다.");
+				return null;
+		}
+		return null;
+	}
+
+	private Event eventDetailVeiw(EventList eventList) {
+		System.out.println("===EventList===");
+		ArrayList<Event> events = eventList.searchEvaluation("state", "Awaiting"); // 심사 대기중 리스트 가져옴
+		if (events.size() <= 0) {
+			System.out.println("보상 지급 대기중인 항목이 없습니다");
+			return null;
+		}
+		for (int i = 0; i < events.size(); i++) {
+			System.out.println(
+					(i + 1) + ": Customer:" + events.get(i).getCustomerID() + ", eventID: " + events.get(i)
+							.getEventID());
+		}
+		System.out.println("Select Line Number: ");
+		int userSelectNum = getUserSelectInt() - 1;
+		if (userSelectNum >= events.size()) {
+			System.out.println("선택 범위를 초과했습니다. 다시 시도해주세요"); // Exception으로 바꾸면 좋을텐데
+			return null;
+		}
+		Event selectedEvent = events.get(userSelectNum);
+		System.out.println("==상세정보==\n" + selectedEvent + "\n 해당 사고를 선택하시겠습니까?");
+		switch (getUserSelectYorN()) {
+			case UserSelection.Yes:
+				return selectedEvent;
+			case UserSelection.No:
+				System.out.println("사고 정보 리스트로 돌아갑니다.");
+				return eventDetailVeiw(eventList);
+			case UserSelection.Cancel:
+				System.out.println("보상 심사가 취소되었습니다.");
+				return null;
+		}
+    return null;
+  }
+
 
 }

@@ -1,8 +1,10 @@
 package main;
 
-import java.util.*;
-
-import main.Employee.EmployeeType;
+import main.Employee.Employee;
+import main.List.CustomerListImpl;
+import main.List.EmployeeListImpl;
+import main.List.InsuranceProductList;
+import main.List.InsuranceProductListImpl;
 
 public class Main {
 

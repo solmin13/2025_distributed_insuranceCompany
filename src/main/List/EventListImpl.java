@@ -1,6 +1,10 @@
 
-package main;
+package main.List;
 import java.util.ArrayList;
+import main.Data.Compensation;
+import main.Data.Evaluation;
+import main.Data.Event;
+import main.Enum.ProcessState;
 
 public class EventListImpl implements EventList {
 
@@ -68,23 +72,23 @@ public class EventListImpl implements EventList {
 	}
 
 	@Override
-	public ArrayList<Evaluation> searchEvaluation(String key, String value) {
-		ArrayList<Evaluation> result = new ArrayList<>();
+	public ArrayList<Event> searchEvaluation(String key, String value) {
+		ArrayList<Event> result = new ArrayList<>();
 		for(Event event : this.Events){
 			Evaluation evaluation = event.getEvaluation();
 			if(evaluation==null) continue;
 			switch (key.toLowerCase()){
 				case "keyword":
-					if(evaluation.toString().toLowerCase().contains(value.toLowerCase())) result.add(evaluation);
+					if(evaluation.toString().toLowerCase().contains(value.toLowerCase())) result.add(event);
 					break;
 				case "state":
-					if(evaluation.getResultOfEvaluation() == ProcessState.fromString(value)) result.add(evaluation);
+					if(evaluation.getResultOfEvaluation() == ProcessState.fromString(value)) result.add(event);
 					break;
 				case "id":
-					if(evaluation.getEvaluationID().equals(value)) result.add(evaluation);
+					if(evaluation.getEvaluationID().equals(value)) result.add(event);
 					break;
 				case "all":
-					result.add(evaluation);
+					result.add(event);
 					break;
 				default:
 					System.out.println("지원하지 않는 검색 필드입니다: " + key);
@@ -95,23 +99,23 @@ public class EventListImpl implements EventList {
 	}
 
 	@Override
-	public ArrayList<Compensation> searchCompensation(String key, String value) {
-		ArrayList<Compensation> result = new ArrayList<>();
+	public ArrayList<Event> searchCompensation(String key, String value) {
+		ArrayList<Event> result = new ArrayList<>();
 		for(Event event : this.Events){
 			Compensation compensation = event.getEvaluation().getCompensation();
 			if(compensation==null) continue;
 			switch (key.toLowerCase()){
 				case "keyword":
-					if(compensation.toString().toLowerCase().contains(value.toLowerCase())) result.add(compensation);
+					if(compensation.toString().toLowerCase().contains(value.toLowerCase())) result.add(event);
 					break;
 				case "state":
-					if(compensation.getState() == ProcessState.fromString(value)) result.add(compensation);
+					if(compensation.getState() == ProcessState.fromString(value)) result.add(event);
 					break;
 				case "id":
-					if(compensation.getCompensationID().equals(value)) result.add(compensation);
+					if(compensation.getCompensationID().equals(value)) result.add(event);
 					break;
 				case "all":
-					result.add(compensation);
+					result.add(event);
 					break;
 				default:
 					System.out.println("지원하지 않는 검색 필드입니다: " + key);

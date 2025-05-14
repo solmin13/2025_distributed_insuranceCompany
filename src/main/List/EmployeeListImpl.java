@@ -1,7 +1,8 @@
-package main;
+package main.List;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import main.Employee.Employee;
 
 public class EmployeeListImpl implements EmployeeList {
 
