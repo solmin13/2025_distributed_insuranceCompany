@@ -43,7 +43,7 @@ public class Menu {
 			menuList = new String[] { "보상 지급", "보상 심사" };
 		}
 
-		System.out.println("Select Menu:");
+		System.out.println("\nSelect Menu===");
 		for (int i = 0; i < menuList.length; i++) {
 			System.out.printf("%d. %s \n", i + 1, menuList[i]);
 		}
@@ -59,18 +59,25 @@ public class Menu {
 				System.exit(0);
 			case 1:
 				createCustomer();
+				break;
 			case 2:
 				deleteCustomer();
+				break;
 			case 3:
 				updateCustomer();
+				break;
 			case 4:
 				searchCustomer();
+				break;
 			case 5:
 				createContract();
+				break;
 			case 6:
 				deleteContract();
+				break;
 			case 7:
 				updateContract();
+				break;
 			case 8:
 				searchContract();
 			default:
@@ -119,14 +126,14 @@ public class Menu {
 
 	private void createCustomer() {
 		System.out.println("Enter customer details:");
-		String accountNumber = getUserInputStr("Account Number");
-		String address = getUserInputStr("Address");
-		int age = getUserInputInt("Age");
+		String accountNumber = getInputStr("Account Number");
+		String address = getInputStr("Address");
+		int age = getInputInt("Age");
 		String customerID = Integer.toString(customerList.getAll().size());
-		String job = getUserInputStr("Job");
-		String name = getUserInputStr("Name");
-		String phoneNumber = getUserInputStr("Phone Number");
-		String rrn = getUserInputStr("RRN");
+		String job = getInputStr("Job");
+		String name = getInputStr("Name");
+		String phoneNumber = getInputStr("Phone Number");
+		String rrn = getInputStr("RRN");
 		Sex sexStr = checkSexInput();
 
 		Sales sales = (Sales) loginedEmployee;
@@ -136,57 +143,84 @@ public class Menu {
 			System.out.printf("false");
 	}
 
-	private void searchCustomer() {
+	private Customer searchCustomer() {
+		showCustomers();
+		String customerID = getInputStr("select customerID");
+		Sales sales = (Sales) loginedEmployee;
+		Customer selectedCustomer = sales.getCustomer(customerID);
+		return showCustomerDetail(selectedCustomer);
+	}
+
+	private void showCustomers() {
 		Sales sales = (Sales) loginedEmployee;
 
 		System.out.println("Customer List===");
+		System.out.println("ID \tName");
 		ArrayList<Customer> customers = sales.getAllCustomer();
 		for (Customer customer : customers) {
-			System.out.println(customer.getCustomerID() + " " + customer.getName());
+			System.out.println(customer.getCustomerID() + "\t" + customer.getName());
 		}
+	}
+
+	private Customer showCustomerDetail(Customer customer) {
+		System.out.println("이름\t" + customer.getName());
+		System.out.println("나이\t" + customer.getAge());
+		System.out.println("주민번호\t" + customer.getRrn());
+		System.out.println("계좌번호\t" + customer.getAccountNumber());
+		System.out.println("직업\t" + customer.getJob());
+		System.out.println("전화번호\t" + customer.getPhoneNumber());
+		System.out.println("고객ID\t" + customer.getCustomerID());
+		return customer;
 	}
 
 	private void updateCustomer() {
 		Sales sales = (Sales) loginedEmployee;
 
-		System.out.println("Customer List===");
-		ArrayList<Customer> customers = sales.getAllCustomer();
-		for (Customer customer : customers) {
-			System.out.println(customer.getCustomerID() + " " + customer.getName());
-		}
-		System.out.println("Enter customer ID to update.");
-		String customerID = getUserInputStr("customerID");
+		Customer customer = searchCustomer();
+		String customerID = customer.getCustomerID();
 
 		System.out.println("Enter customer details:");
-		String accountNumber = getUserInputStr("Account Number");
-		String address = getUserInputStr("Address");
-		int age = getUserInputInt("Age");
-		String job = getUserInputStr("Job");
-		String name = getUserInputStr("Name");
-		String phoneNumber = getUserInputStr("Phone Number");
-		String rrn = getUserInputStr("RRN");
-		String sexStr = getUserInputStr("Sex (M/F)");
+		String accountNumber = getInputOrKeepStr("Account Number", customer.getAccountNumber());
+		String address = getInputOrKeepStr("Address", customer.getAddress());
+		int age = getInputOrKeepInt("Age", customer.getAge());
+		String job = getInputOrKeepStr("Job", customer.getJob());
+		String name = getInputOrKeepStr("Name", customer.getName());
+		String phoneNumber = getInputOrKeepStr("Phone Number", customer.getPhoneNumber());
+		String rrn = getInputOrKeepStr("RRN", customer.getRrn());
+		String sexStr = getInputOrKeepStr("Sex (M/F)", customer.getSex().toString().substring(0, 1)); // SEX의 ENUM을
+																										// String으로 변환 후
+																										// 첫 글자만 가져옴
 		Sex sex = sexStr.equalsIgnoreCase("M") ? Sex.MALE : Sex.FEMALE;
 		String log = "";
 		if (sales.updateCustomer(accountNumber, address, age, customerID, job, name, phoneNumber, rrn, sex)) {
-			log = "Customer(" + customerID + ") updated successfully.";
+			log = "Customer updated successfully.";
+			showCustomerDetail(sales.getCustomer(customerID));
 		} else {
 			log = "Failed: cannot update customer(" + customerID + ")";
 		}
 		System.out.println(log);
+	}
 
+	private String getInputOrKeepStr(String title, String prevValue) {
+		String userInput = "";
+		System.out.print(title + ": ");
+		userInput = scanner.nextLine().trim();
+		if (userInput == null || userInput.equals("")) {
+			userInput = prevValue;
+		}
+		return userInput;
+	}
+
+	private int getInputOrKeepInt(String title, int prevValue) {
+		return Integer.parseInt(getInputOrKeepStr(title, Integer.toString(prevValue)));
 	}
 
 	private void deleteCustomer() {
 		Sales sales = (Sales) loginedEmployee;
 
-		System.out.println("Customer List===");
-		ArrayList<Customer> customers = sales.getAllCustomer();
-		for (Customer customer : customers) {
-			System.out.println(customer.getCustomerID() + " " + customer.getName());
-		}
+		showCustomers();
 		System.out.println("Enter customer ID to delete.");
-		String customerID = getUserInputStr("customerID");
+		String customerID = getInputStr("customerID");
 
 		String log = "";
 		if (sales.deleteCustomer(customerID)) {
@@ -200,9 +234,9 @@ public class Menu {
 
 	private void createContract() {
 		System.out.println("Enter contract details:");
-		String customerID = getUserInputStr("customerID");
-		LocalDate expirationDate = getUserInputDate("expiration date");
-		
+		String customerID = getInputStr("customerID");
+		LocalDate expirationDate = getInputDate("expiration date");
+
 	}
 
 	private void searchContract() {
@@ -237,7 +271,7 @@ public class Menu {
 
 	}
 
-	private String getUserInputStr(String title) {
+	private String getInputStr(String title) {
 		String input = "";
 		do {
 			System.out.print(title + ": ");
@@ -249,25 +283,26 @@ public class Menu {
 		return input;
 	}
 
-	private int getUserInputInt(String title) {
-		return Integer.parseInt(getUserInputStr(title));
+	private int getInputInt(String title) {
+		return Integer.parseInt(getInputStr(title));
 	}
-	private LocalDate getUserInputDate(String title) {
+
+	private LocalDate getInputDate(String title) {
 		return null;
 	}
 // ==============================
 
 	public void createInsuaranceProduct() {
 
-		String productName = getUserInputStr("product name");
+		String productName = getInputStr("product name");
 
-		int maxAge = getUserInputInt("max age");
-		int maxNumberEvent = getUserInputInt("max number event");
-		int premium = getUserInputInt("premium");
-		int reductionPeriod = getUserInputInt("reduction period");
-		int reductionRatio = getUserInputInt("reduction ratio");
+		int maxAge = getInputInt("max age");
+		int maxNumberEvent = getInputInt("max number event");
+		int premium = getInputInt("premium");
+		int reductionPeriod = getInputInt("reduction period");
+		int reductionRatio = getInputInt("reduction ratio");
 		Sex sex = checkSexInput();
-		int exemptionPeriod = getUserInputInt("exemption period");
+		int exemptionPeriod = getInputInt("exemption period");
 		HashMap<String, String> coverageByAge = checkHashMap();
 
 		ProductManagement manager = (ProductManagement) loginedEmployee;
@@ -314,7 +349,7 @@ public class Menu {
 				try {
 					index = Integer.parseInt(input);
 				} catch (NumberFormatException e) {
-					index = getUserInputInt("잘못된 입력입니다. 번호를 다시 입력해주세요 ");
+					index = getInputInt("잘못된 입력입니다. 번호를 다시 입력해주세요 ");
 				}
 				System.out.println(manager.getProduct(insuranceProductList, index - 1).toString());
 				break;
@@ -332,15 +367,15 @@ public class Menu {
 
 		switch (chooseMenu) {
 		case 1:
-			String checkProductID = getUserInputStr("찾으려는 상품의 ID를 입력하세요");
+			String checkProductID = getInputStr("찾으려는 상품의 ID를 입력하세요");
 			products = manager.searchProducts(insuranceProductList, "productID", checkProductID);
 			break;
 		case 2:
-			String checkProductName = getUserInputStr("찾으려는 상품의 이름을 입력하세요");
+			String checkProductName = getInputStr("찾으려는 상품의 이름을 입력하세요");
 			products = manager.searchProducts(insuranceProductList, "productName", checkProductName);
 			break;
 		case 3:
-			String checkProductManagerID = getUserInputStr("찾으려는 상품의 상품관리자 id를 입력하세요");
+			String checkProductManagerID = getInputStr("찾으려는 상품의 상품관리자 id를 입력하세요");
 			products = manager.searchProducts(insuranceProductList, "productManagementID", checkProductManagerID);
 			break;
 		}
@@ -349,7 +384,7 @@ public class Menu {
 	}
 
 	public void updateInsuaranceProduct() {
-		String productID = getUserInputStr("업데이트하려는 상품의 ID를 적어주세요");
+		String productID = getInputStr("업데이트하려는 상품의 ID를 적어주세요");
 
 		ProductManagement manager = (ProductManagement) loginedEmployee;
 		InsuranceProduct product = manager.searchProduct(insuranceProductList, productID);
@@ -373,25 +408,25 @@ public class Menu {
 			result = product.setProductName(scanner.nextLine());
 			break;
 		case 2:
-			result = product.setMaxAge(getUserInputInt("product name"));
+			result = product.setMaxAge(getInputInt("product name"));
 			break;
 		case 3:
-			result = product.setMaxNumberEvent(getUserInputInt("max number event"));
+			result = product.setMaxNumberEvent(getInputInt("max number event"));
 			break;
 		case 4:
-			result = product.setPremium(getUserInputInt("premium"));
+			result = product.setPremium(getInputInt("premium"));
 			break;
 		case 5:
-			result = product.setReductionPeriod(getUserInputInt("reduction period"));
+			result = product.setReductionPeriod(getInputInt("reduction period"));
 			break;
 		case 6:
-			result = product.setReductionRatio(getUserInputInt("reduction ratio"));
+			result = product.setReductionRatio(getInputInt("reduction ratio"));
 			break;
 		case 7:
 			result = product.setSex(checkSexInput());
 			break;
 		case 8:
-			result = product.setExemptionPeriod(getUserInputInt("exemption period"));
+			result = product.setExemptionPeriod(getInputInt("exemption period"));
 			break;
 		case 9:
 			result = product.setCoverageByAge(checkHashMap());
@@ -410,7 +445,7 @@ public class Menu {
 		boolean result = false;
 
 		while (true) {
-			input = getUserInputStr("삭제하려는 상품의 ID를 입력해주세요");
+			input = getInputStr("삭제하려는 상품의 ID를 입력해주세요");
 			if (input != null) {
 				result = manager.deleteProduct(insuranceProductList, input);
 				break;
