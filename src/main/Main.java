@@ -1,10 +1,7 @@
 package main;
 
 import main.Employee.Employee;
-import main.List.CustomerListImpl;
-import main.List.EmployeeListImpl;
-import main.List.InsuranceProductList;
-import main.List.InsuranceProductListImpl;
+import main.List.*;
 
 public class Main {
 
@@ -14,20 +11,23 @@ public class Main {
 	private static CustomerListImpl customerList;
 	private static EmployeeListImpl employeeList;
 	private static InsuranceProductList insuranceProductList;
+	private static ContractList contractList;
 
 	public static void main(String[] args) {
 		customerList = new CustomerListImpl();
 		employeeList = new EmployeeListImpl();
 		insuranceProductList = new InsuranceProductListImpl();
+		contractList = new ContractListImpl();
 		loadData = new LoadData(customerList, employeeList);
 
 		loadData.loadCustomerData();
 		loadData.loadEmployeeData();
 		loadData.loadInsuranceProductData();
-		
-		loginedEmployee = login("7");
+		loadData.loadContractData();
 
-		Menu menu = new Menu(customerList, employeeList,insuranceProductList, loginedEmployee);
+		loginedEmployee = login("1");
+
+		menu = new Menu(customerList, employeeList, insuranceProductList, contractList, loginedEmployee);
 		while (true) {
 			menu.printMainMenu();
 			int selectedMenu = menu.getUserSelectInt();
