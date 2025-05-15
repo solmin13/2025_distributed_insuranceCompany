@@ -52,4 +52,7 @@ public class LoadData {
 	public void loadInsuranceProductData() {
 		
 	}
+	public void loadContractData() {
+		
+	}
 }
