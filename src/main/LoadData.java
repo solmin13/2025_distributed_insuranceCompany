@@ -20,14 +20,19 @@ public class LoadData {
 		this.employeeList = employeeList;
 	}
 	public void loadCustomerData() {
-		for (int i = 0; i < 3; i++) { // add temp three Customer
-			int numOfEmployees = customerList.customers.size();
-			Customer customer = new Customer.Builder().accountNumber("111").address("111").age(11)
-					.customerID(Integer.toString(i + 1)).job("111").name("111").rrn("111").sex(Sex.FEMALE)
-					.phoneNumber("111").build();
-			customerList.insert(customer);
-		}
-
+		Customer customer1 = new Customer.Builder().accountNumber("333377645328").address("서울특별시 서대문구 북가좌동").age(23)
+				.customerID(Integer.toString(0)).job("대학생").name("장소윤").rrn("60221340").sex(Sex.FEMALE)
+				.phoneNumber("01077645328").build();
+		Customer customer2 = new Customer.Builder().accountNumber("333346965328").address("서울특별시 서대문구 남가좌동").age(23)
+				.customerID(Integer.toString(1)).job("대학생").name("박솔민").rrn("60221333").sex(Sex.FEMALE)
+				.phoneNumber("01010001000").build();
+		Customer customer3 = new Customer.Builder().accountNumber("333324555328").address("서울특별시 서대문구 북가좌동").age(25)
+				.customerID(Integer.toString(2)).job("대학생").name("이종민").rrn("60211111").sex(Sex.FEMALE)
+				.phoneNumber("01020002000").build();
+		
+		customerList.insert(customer1);
+		customerList.insert(customer2);
+		customerList.insert(customer3);
 	}
 
 	public void loadEmployeeData() {
