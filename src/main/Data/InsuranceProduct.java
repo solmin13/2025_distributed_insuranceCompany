@@ -26,6 +26,7 @@ public class InsuranceProduct {
 		this.productName = builder.productName;
 		this.reductionPeriod = builder.reductionPeriod;
 		this.reductionRatio = builder.reductionRatio;
+		this.sex = builder.sex;
 	}
 
 	/**
@@ -37,6 +38,10 @@ public class InsuranceProduct {
 		if(coverageByAge.containsKey(Integer.toString(ageGroup)))
 			return coverageByAge.get(Integer.toString(ageGroup));
 		return null;
+	}
+
+	public HashMap<String,String> getCoverageByAge(){
+		return this.coverageByAge;
 	}
 
 	public int getExemptionPeriod(){return exemptionPeriod;}
@@ -93,8 +98,9 @@ public class InsuranceProduct {
 		return true;
 	}
 
-	public void setProductID(String productID){
+	public boolean setProductID(String productID){
 		this.productID = productID;
+		return true;
 	}
 
 	public String toString() {

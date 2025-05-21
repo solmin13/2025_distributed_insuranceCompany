@@ -310,7 +310,7 @@ public class Menu {
 				productName, sex, premium, maxAge, maxNumberEvent))
 			System.out.println("상품이 정상적으로 등록되었습니다.");
 		else // 같은 이름의 상품이 있는 경우 예외 처리
-			System.out.println("같은 이름의 상품이 있어 등록이 실해했습니다.");
+			System.out.println("문제가 발생하였습니다.");
 	}
 
 	public void searchInsuaranceProduct() {
@@ -397,7 +397,7 @@ public class Menu {
 		String[] menuList = { "product name", "max age", "max number event", "premium", "reduction period",
 				"reduction ratio", "sex", "exemption period", "coverage by age" };
 		for (int i = 0; i < menuList.length; i++) {
-			System.out.println((i + 1) + " " + menuList);
+			System.out.println((i + 1) + " " + menuList[i]);
 		}
 		int chooseMenu = getUserSelectInt();
 		System.out.println("수정된 값을 입력해주세요 : ");
@@ -433,9 +433,10 @@ public class Menu {
 			break;
 		}
 
-		if (result)
+		if (result){
 			System.out.println("성공적으로 수정되었습니다.");
-		else
+			manager.updateProduct(insuranceProductList,product);
+		}else
 			System.out.println("문제가 발생하였습니다.");
 	}
 
@@ -483,7 +484,6 @@ public class Menu {
 	/**
 	 * 입력값에 따라 Sex 결정
 	 * 
-	 * @param scanner
 	 * @return 입력값에 따른 Sex 반환
 	 */
 	public Sex checkSexInput() {
