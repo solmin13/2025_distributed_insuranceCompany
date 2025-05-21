@@ -6,7 +6,7 @@ public interface InsuranceProductList {
 
 	public boolean delete(String productID);
 
-	public boolean insert(InsuranceProduct insuranceProduct);
+	public InsuranceProduct insert(InsuranceProduct insuranceProduct);
 
 	public InsuranceProduct search(String productID);
 

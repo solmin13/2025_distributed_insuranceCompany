@@ -45,11 +45,14 @@ public class InsuranceProductListImpl implements InsuranceProductList {
 	 * @param insuranceProduct
 	 * @return insert 성공 시 true, 실패 시 false
 	 */
-	public boolean insert(InsuranceProduct insuranceProduct){
+	public InsuranceProduct insert(InsuranceProduct insuranceProduct){
 		if(insuranceProduct==null)
-			return false;
+			return null;
 		insuranceProduct.setProductID(generateProductID());
-		return this.insuranceProducts.add(insuranceProduct);
+		if(this.insuranceProducts.add(insuranceProduct)){
+			return insuranceProduct;
+		}
+		return null;
 	}
 
 	/**
